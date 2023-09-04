@@ -1,8 +1,6 @@
 local lsp = require('lsp-zero')
 lsp.preset('recommended')
 
-vim.lsp.set_log_level("trace")
-
 lsp.ensure_installed({
     'tsserver',
     'eslint',
@@ -98,4 +96,8 @@ lspconfig.tailwindcss.setup({})
 lspconfig.cssmodules_ls.setup({})
 
 lsp.setup()
+
+vim.diagnostic.config({
+    virtual_text = true
+})
 require("luasnip.loaders.from_vscode").lazy_load()
