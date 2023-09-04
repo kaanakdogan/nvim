@@ -42,9 +42,22 @@ lsp.set_preferences({
     }
 })
 
+lsp.format_on_save({
+    format_opts = {
+        async = false,
+        timeout_ms = 10000,
+    },
+    servers = {
+        ['rust_analyzer'] = { 'rust' },
+        ['eslint'] = { 'javascript', 'typescript' },
+        ['tsserver'] = { 'typescript' },
+        ['lua_ls'] = { 'lua' },
+    }
+})
 lsp.on_attach(function(client, bufnr)
     local opts = { buffer = bufnr, remap = false }
 
+    vim.notify("hello lsp")
     vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
     vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
     vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
@@ -59,22 +72,6 @@ end)
 
 lsp.setup()
 
-vim.diagnostic.config({
-    virtual_text = true
-})
-lsp.format_on_save({
-    format_opts = {
-        async = false,
-        timeout_ms = 10000,
-    },
-    servers = {
-        ['rust_analyzer'] = { 'rust' },
-        ['eslint'] = { 'javascript', 'typescript' },
-        ['tsserver'] = { 'typescript' },
-        ['lua_ls'] = { 'lua' },
-    }
-})
-
 local lspconfig = require("lspconfig")
 
 lspconfig.eslint.setup({
@@ -82,6 +79,7 @@ lspconfig.eslint.setup({
         client.server_capabilities.documentFormattingProvider = true
         client.server_capabilities.documentRangeFormattingProvider = true
 
+        vim.notify('hello eslint')
         vim.api.nvim_create_autocmd("BufWritePre", {
             buffer = bufnr,
             command = "EslintFixAll",
@@ -95,7 +93,7 @@ lspconfig.cssls.setup({})
 lspconfig.tailwindcss.setup({})
 lspconfig.cssmodules_ls.setup({})
 
-lsp.setup()
+
 
 vim.diagnostic.config({
     virtual_text = true
